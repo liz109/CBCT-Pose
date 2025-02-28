@@ -1,0 +1,79 @@
+pretrained_model_name_or_path: ckpts/zero123-165000
+# CompVis/stable-diffusion-v1-4
+# 'CompVis/ldm-super-resolution-4x-openimages'
+cond_stage_model_name_or_path: openai/clip-vit-large-patch14
+# default: "openai/clip-vit-base-patch32"
+
+revision: Null
+variant: Null
+validation_prompts: Null
+seed: 37
+
+# accelerator
+report_to: wandb     # tensorboard     
+# gradient_accumulation_steps: 1
+mixed_precision: fp16
+
+# Dataset
+dataset_name: Null 
+dataset_config_name: Null
+cache_dir: Null
+train_data_dir: data/aapm/train
+val_data_dir: data/aapm/val
+image_size: 256
+
+
+# logs 
+exp_name: aapm_200
+output_dir: ckpts
+logging_dir: logs
+log_every_steps: 1000
+sample_every_steps: 10000   
+# validation_steps: 500     # total_steps=len(data_loader)*num_train_epochs=500*10
+
+# Preprocessing the datasets and Dataloader
+resolution: 256
+center_crop: True
+random_flip: False         
+max_train_samples: Null
+
+# Train
+dataloader_num_workers: 0
+train_batch_size: 80       # Batch size (per device); len(data_loader)=len(dataset)/train_batch_size
+max_train_steps: 150000
+num_train_epochs: 40      
+overrode_max_train_steps: True
+gradient_checkpointing: True
+
+snr_gamma: Null
+# use_8bit_adam: False
+# allow_tf32: False
+# use_ema: True
+# non_ema_revision: Null
+
+# Lr and Optimizer
+learning_rate: 1e-06        # 1e-05 float(); INVALID=[1e-03,1e-04,1e-06]
+# scale_lr: False
+lr_scheduler: linear        # constant; ref line471: https://github.com/huggingface/transformers/blob/main/src/transformers/optimization.py
+lr_warmup_steps: 0          # 500
+adam_beta1: 0.9
+adam_beta2: 0.999
+adam_weight_decay: 1e-2
+adam_epsilon: 1e-08
+max_grad_norm: 1.0
+push_to_hub: False
+hub_token: Null
+
+prediction_type: Null
+hub_model_id: Null
+local_rank: -1
+checkpointing_steps: 1500
+checkpoints_total_limit: Null
+resume_from_checkpoint: Null
+# enable_xformers_memory_efficient_attention: False
+
+
+
+# sample noise
+noise_offset: 0
+input_perturbation: 0
